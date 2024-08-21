@@ -1045,15 +1045,19 @@ SQL;
             DB::prepared_query("DELETE FROM \"$versionsTableName\" WHERE \"RecordID\" = ?", [$toID]);
 
             // Dynamicaly select the current database, which will be a temporary database in case of unit tests
-            $currentDB = DB::query('SELECT DATABASE() as DB')->column('DB')[0];
+            //$currentDB = DB::query('SELECT DATABASE() as DB')->column('DB')[0];
+            $currentDB = DB::query('SELECT current_database() as db')->column('db')[0];
 
             // Copy all versions of base record, todo: optimize to only copy needed versions
             $fields = DB::query("SELECT \"COLUMN_NAME\" FROM \"INFORMATION_SCHEMA\".\"COLUMNS\" WHERE \"TABLE_SCHEMA\" = '$currentDB' AND \"TABLE_NAME\" = '$versionsTableName' AND \"COLUMN_NAME\" NOT IN('ID','RecordID')");
-            $fields_str = '"' . implode('","', $fields->column()) . '"';
-            DB::prepared_query("INSERT INTO \"$versionsTableName\" ( \"RecordID\", $fields_str)
-                    SELECT ? AS \"RecordID\", $fields_str
-                    FROM \"$versionsTableName\"
-                    WHERE \"RecordID\" = ?", [$toID, $fromID]);
+
+            if (count($fields->column())) {
+                $fields_str = '"' . implode('","', $fields->column()) . '"';
+                DB::prepared_query("INSERT INTO \"$versionsTableName\" ( \"RecordID\", $fields_str)
+                        SELECT ? AS \"RecordID\", $fields_str
+                        FROM \"$versionsTableName\"
+                        WHERE \"RecordID\" = ?", [$toID, $fromID]);
+            }
         }
     }
 }
