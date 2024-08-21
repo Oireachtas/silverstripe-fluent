@@ -1049,7 +1049,7 @@ SQL;
             $currentDB = DB::query('SELECT current_database() as db')->column('db')[0];
 
             // Copy all versions of base record, todo: optimize to only copy needed versions
-            $fields = DB::query("SELECT \"COLUMN_NAME\" FROM \"INFORMATION_SCHEMA\".\"COLUMNS\" WHERE \"TABLE_SCHEMA\" = '$currentDB' AND \"TABLE_NAME\" = '$versionsTableName' AND \"COLUMN_NAME\" NOT IN('ID','RecordID')");
+            $fields = DB::query("SELECT \"column_name\" FROM \"information_schema\".\"columns\" WHERE \"table_schema\" = '$currentDB' AND \"table_name\" = '$versionsTableName' AND \"column_name\" NOT IN('id','recordid')");
 
             if (count($fields->column())) {
                 $fields_str = '"' . implode('","', $fields->column()) . '"';
