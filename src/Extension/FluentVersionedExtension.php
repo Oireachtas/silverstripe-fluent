@@ -1044,15 +1044,19 @@ SQL;
             // Remove existing versions from duplicated object, created by onBeforeWrite
             DB::prepared_query("DELETE FROM \"$versionsTableName\" WHERE \"RecordID\" = ?", [$toID]);
 
-            // Dynamicaly select the current database, which will be a temporary database in case of unit tests
-            //$currentDB = DB::query('SELECT DATABASE() as DB')->column('DB')[0];
-            $currentDB = DB::query('SELECT current_database() as db')->column('db')[0];
-
             // Copy all versions of base record, todo: optimize to only copy needed versions
-            $fields = DB::query("SELECT \"column_name\" FROM \"information_schema\".\"columns\" WHERE \"table_schema\" = '$currentDB' AND \"table_name\" = '$versionsTableName' AND \"column_name\" NOT IN('id','recordid')");
+            // This has been updated to work for Postgres on 22nd August 2024
+            $fields = DB::query("SELECT * FROM \"$versionsTableName\"");
 
-            if (count($fields->column())) {
-                $fields_str = '"' . implode('","', $fields->column()) . '"';
+            $columnNames = [];
+            foreach ($fields->getColumnNames() as $field) {
+                if ($field !== 'ID' && $field !== 'RecordID') {
+                    $columnNames[] = $field;
+                }
+            }
+
+            if (count($columnNames)) {
+                $fields_str = '"' . implode('","', $columnNames) . '"';
                 DB::prepared_query("INSERT INTO \"$versionsTableName\" ( \"RecordID\", $fields_str)
                         SELECT ? AS \"RecordID\", $fields_str
                         FROM \"$versionsTableName\"
