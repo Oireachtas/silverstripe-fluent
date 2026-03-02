@@ -18,6 +18,8 @@ use TractorCow\Fluent\Extension\FluentFilteredExtension;
 use TractorCow\Fluent\Model\Locale;
 use TractorCow\Fluent\State\FluentState;
 use TractorCow\Fluent\Task\ConvertTranslatableTask\Exception;
+use SilverStripe\PolyExecution\PolyOutput;
+use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Provides migration from the Translatable module in a SilverStripe 3 website to the Fluent format for SilverStripe 4.
@@ -34,9 +36,7 @@ use TractorCow\Fluent\Task\ConvertTranslatableTask\Exception;
  */
 class ConvertTranslatableTask extends BuildTask
 {
-    protected $title = "Convert Translatable > Fluent Task";
-
-    protected $description = "Migrates site DB from SS3 Translatable DB format to SS4 Fluent.";
+    protected string $title = "Convert Translatable > Fluent Task";
 
     private static $segment = 'ConvertTranslatableTask';
 
@@ -83,7 +83,7 @@ class ConvertTranslatableTask extends BuildTask
         return array_unique($classes);
     }
 
-    public function run($request)
+    public function execute(InputInterface $input, PolyOutput $output): int
     {
         $this->checkInstalled();
 
@@ -188,6 +188,8 @@ class ConvertTranslatableTask extends BuildTask
                 });
             }
         );
+
+        return 1;
     }
 
     /**
