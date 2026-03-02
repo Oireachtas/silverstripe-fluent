@@ -13,7 +13,6 @@ use SilverStripe\Forms\FormField;
 use SilverStripe\Forms\GridField\GridField_ActionMenuItem;
 use SilverStripe\Forms\GridField\GridFieldConfig;
 use SilverStripe\ORM\ArrayList;
-use SilverStripe\Core\Extension;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataQuery;
 use SilverStripe\ORM\DB;
