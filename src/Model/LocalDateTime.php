@@ -71,7 +71,7 @@ class LocalDateTime extends DBDatetime
      * @param bool $markChanged
      * @return $this
      */
-    public function setValue($value, $record = null, $markChanged = true)
+    public function setValue(mixed $value, \SilverStripe\Model\ModelData|array|null $record = null, bool $markChanged = true): static
     {
         // Disable timezone when setting value (always stored in server timezone)
         $timezone = $this->getTimezone();
