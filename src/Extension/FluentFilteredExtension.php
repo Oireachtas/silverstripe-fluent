@@ -4,7 +4,7 @@ namespace TractorCow\Fluent\Extension;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridFieldConfig;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataQuery;
 use SilverStripe\ORM\ManyManyList;
@@ -21,7 +21,7 @@ use TractorCow\Fluent\State\FluentState;
  *
  * @extends DataExtension<DataObject&static>
  */
-class FluentFilteredExtension extends DataExtension
+class FluentFilteredExtension extends Extension
 {
     /**
      * Deletions are managed via DeletePolicy

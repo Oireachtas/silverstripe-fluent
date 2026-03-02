@@ -2,7 +2,7 @@
 
 namespace TractorCow\Fluent\Extension;
 
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\Versioned\ChangeSetItem;
 
 /**
@@ -10,7 +10,7 @@ use SilverStripe\Versioned\ChangeSetItem;
  *
  * @extends DataExtension<ChangeSetItem>
  */
-class FluentChangesExtension extends DataExtension
+class FluentChangesExtension extends Extension
 {
     /**
      * @see ChangeSetItem::getChangeType()
