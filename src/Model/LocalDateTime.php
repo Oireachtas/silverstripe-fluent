@@ -50,11 +50,12 @@ class LocalDateTime extends DBDatetime
     }
 
     public function getCustomFormatter(
-        $locale = null,
-        $pattern = null,
-        $dateLength = IntlDateFormatter::MEDIUM,
-        $timeLength = IntlDateFormatter::MEDIUM
-    ) {
+        ?string $locale = null,
+        ?string $pattern = null,
+        int $dateLength = IntlDateFormatter::MEDIUM,
+        int $timeLength = IntlDateFormatter::MEDIUM
+    ): IntlDateFormatter
+    {
         $formatter = parent::getCustomFormatter($locale, $pattern, $dateLength, $timeLength);
         $timezone = $this->getTimezone();
         if ($timezone) {
